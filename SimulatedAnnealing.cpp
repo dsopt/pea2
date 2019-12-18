@@ -10,7 +10,6 @@ SimulatedAnnealing::SimulatedAnnealing()
 	time = Time();
 	stop = 50.0;
 	minfound = 0.0;
-	maxtemp = 500000;
 	a = 0.9;
 	e = 2,718281828459;
 	max = 2147483647;
@@ -47,6 +46,7 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 	size = size_;
 	clear();
 	itmax = 10 * size;
+	maxtemp = 10000 * size;
 	temp = maxtemp;
 
 	path = firstPath(matrix_);
