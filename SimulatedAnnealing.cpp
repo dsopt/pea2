@@ -8,12 +8,10 @@ using namespace std;
 SimulatedAnnealing::SimulatedAnnealing()
 {
 	time = Time();
-	stop = 50.0;
+	stop = 100.0;
 	minfound = 0.0;
 	a = 0.9;
-	e = 2,718281828459;
 	max = 2147483647;
-	clear();
 }
 
 SimulatedAnnealing::~SimulatedAnnealing()
@@ -46,7 +44,7 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 	size = size_;
 	clear();
 	itmax = 10 * size;
-	maxtemp = 10000 * (double)size;
+	maxtemp = 10000.00 * (double)size;
 	temp = maxtemp;
 
 	path = firstPath(matrix_);
@@ -61,6 +59,7 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 		//jezeli zbyt dlugo nie znajduje lepszego wyniku do poprzedniego, wykonywane jest przetasowanie
 		if (itsince > itmax) {
 			itsince = 0;
+			temp = maxtemp / 2;
 			path = randomizePath();
 			cost = getCost(matrix_);
 			setCandidates();
@@ -143,9 +142,10 @@ void SimulatedAnnealing::setCandidates()
 	candidates.clear();
 
 	for (int i = 0; i < size - 1; i++) {
-		candidates.push_back({ path.at(i), path.at(i + 1) });
+		for (int j = i; j < size; j++) {
+			candidates.push_back({ path.at(i), path.at(j) });
+		}
 	}
-	candidates.push_back({ path.at(size - 1), path.at(0) });
 }
 
 
@@ -157,20 +157,18 @@ void SimulatedAnnealing::chooseCandidate(int** matrix_)
 
 	swap(m.first, m.last);
 	int tempcost = getCost(matrix_);
-	double c = (rand() % 101) / 100;
-	double b = ((double)cost - (double)tempcost) / temp;
+	double c = (double)(rand() % 101) / 100.00;
+	double b = (double)exp((((double)cost - (double)tempcost)) / temp);
 
 	//wybieramy nowa sciezke jezeli koszt jest mniejszy lub spelnia rownanie i losujemy dla niej sasiedztwo
 	//w przeciwnym wypadku cofamy sie
-	if (tempcost <= cost || c < pow(e, b)) {
+	if (tempcost < cost || c < b) {
 		cost = tempcost;
 		setCandidates();
 	}
 	else {
 		swap(m.last, m.first);
-		cost = getCost(matrix_);
 	}
-
 }
 
 int SimulatedAnnealing::getCost(int** matrix_)
@@ -187,8 +185,11 @@ int SimulatedAnnealing::getCost(int** matrix_)
 
 void SimulatedAnnealing::swap(int i, int j)
 {
-	path.at(distance(path.begin(), find(path.begin(), path.end(), i))) = j;
-	path.at(distance(path.begin(), find(path.begin(), path.end(), j))) = i;
+	int x = distance(path.begin(), find(path.begin(), path.end(), i));
+	int y = distance(path.begin(), find(path.begin(), path.end(), j));
+
+	path.at(x) = j;
+	path.at(y) = i;
 }
 
 void SimulatedAnnealing::clear()
