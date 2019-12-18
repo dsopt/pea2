@@ -35,7 +35,7 @@ double SimulatedAnnealing::geta()
 	return a;
 }
 
-void SimulatedAnnealing::seta(int a_)
+void SimulatedAnnealing::seta(double a_)
 {
 	a = a_;
 }
@@ -46,7 +46,7 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 	size = size_;
 	clear();
 	itmax = 10 * size;
-	maxtemp = 10000 * size;
+	maxtemp = 10000 * (double)size;
 	temp = maxtemp;
 
 	path = firstPath(matrix_);
@@ -61,7 +61,7 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 		//jezeli zbyt dlugo nie znajduje lepszego wyniku do poprzedniego, wykonywane jest przetasowanie
 		if (itsince > itmax) {
 			itsince = 0;
-			temp = maxtemp / 2;
+			path = randomizePath();
 			cost = getCost(matrix_);
 			setCandidates();
 		}
@@ -117,6 +117,26 @@ std::vector<int> SimulatedAnnealing::firstPath(int** matrix_)
 	return firstpath;
 }
 
+std::vector<int> SimulatedAnnealing::randomizePath()
+{
+	std::vector<int> randpath;
+	bool* visited = new bool[size];
+	int x = 0;
+
+	for (int i = 0; i < size; i++) {
+		x = rand() % size;
+		if (visited[x] != true) {
+			randpath.push_back(x);
+			visited[x] = true;
+		}
+		else {
+			i--;
+		}
+	}
+
+	return randpath;
+}
+
 
 void SimulatedAnnealing::setCandidates()
 {
@@ -138,11 +158,11 @@ void SimulatedAnnealing::chooseCandidate(int** matrix_)
 	swap(m.first, m.last);
 	int tempcost = getCost(matrix_);
 	double c = (rand() % 101) / 100;
-	double b = (cost - tempcost) / temp;
+	double b = ((double)cost - (double)tempcost) / temp;
 
 	//wybieramy nowa sciezke jezeli koszt jest mniejszy lub spelnia rownanie i losujemy dla niej sasiedztwo
 	//w przeciwnym wypadku cofamy sie
-	if (tempcost < cost || c < pow(e, b)) {
+	if (tempcost <= cost || c < pow(e, b)) {
 		cost = tempcost;
 		setCandidates();
 	}
