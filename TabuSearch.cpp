@@ -158,7 +158,7 @@ void TabuSearch::chooseCandidate(int** matrix_)
 	for (int i = 0; i < (int)candidates.size(); i++) {
 		if (contains(tabu, candidates.at(i)) == -1) {
 			swap(candidates.at(i).first, candidates.at(i).last);
-			if (getCost(matrix_) <= bestcost) {
+			if (getCost(matrix_) < bestcost) {
 				bestcost = getCost(matrix_);
 				bestpath = path;
 				m = { candidates.at(i).last, candidates.at(i).first };
@@ -167,7 +167,7 @@ void TabuSearch::chooseCandidate(int** matrix_)
 		}
 		else {
 			swap(candidates.at(i).first, candidates.at(i).last);
-			if (getCost(matrix_) <= mincost) {
+			if (getCost(matrix_) < mincost) {
 				tabu.erase(tabu.begin() + contains(tabu, candidates.at(i)));
 				bestcost = getCost(matrix_);
 				bestpath = path;
