@@ -107,6 +107,7 @@ std::vector<int> TabuSearch::firstPath(int** matrix_)
 
 std::vector<int> TabuSearch::randomizePath()
 {
+	tabu.clear();
 	std::vector<int> randpath;
 	bool* visited = new bool[size];
 	int x = 0;

@@ -29,6 +29,9 @@ void Menu::options()
 
 	switch (in) {
 	case '1':
+		cout << "Akualna sciezka do pliku to: " << input.getPath() << " . Podaj sciezke do nowego pliku: " << endl;
+		cin >> path_;
+		input.setPath(path_);
 		matrix = input.fromFile();
 		options();
 		break;

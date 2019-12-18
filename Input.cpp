@@ -78,3 +78,13 @@ int Input::getSize()
 {
 	return size;
 }
+
+void Input::setPath(std::string path_)
+{
+	path = path_;
+}
+
+std::string Input::getPath()
+{
+	return path;
+}

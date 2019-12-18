@@ -4,6 +4,8 @@ class Input {
 public:
 	int** fromFile();
 	int getSize();
+	void setPath(std::string path_);
+	std::string getPath();
 	Input(std::string path_);
 	Input();
 	~Input();

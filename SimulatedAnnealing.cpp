@@ -10,7 +10,7 @@ SimulatedAnnealing::SimulatedAnnealing()
 	time = Time();
 	stop = 50.0;
 	minfound = 0.0;
-	maxtemp = 2137;
+	maxtemp = 500000;
 	a = 0.9;
 	e = 2,718281828459;
 	max = 2147483647;
