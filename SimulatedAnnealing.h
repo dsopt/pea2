@@ -32,7 +32,6 @@ private:
 	std::vector<int> minpath;
 	std::vector<move> candidates;
 	std::vector<int> firstPath(int** matrix_);
-	std::vector<int> randomizePath();
 	void setCandidates();
 	void chooseCandidate(int** matrix_);
 	int getCost(int** matrix_);

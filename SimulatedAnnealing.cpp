@@ -61,7 +61,7 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 		//jezeli zbyt dlugo nie znajduje lepszego wyniku do poprzedniego, wykonywane jest przetasowanie
 		if (itsince > itmax) {
 			itsince = 0;
-			randomizePath();
+			temp = maxtemp / 2;
 			cost = getCost(matrix_);
 			setCandidates();
 		}
@@ -89,17 +89,17 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 
 std::vector<int> SimulatedAnnealing::firstPath(int** matrix_)
 {
-	std::vector<int> randpath;
+	std::vector<int> firstpath;
 	bool* visited = new bool[size];
 	int minchoice, minnode, lastnode;
 
-	randpath.push_back(0);
+	firstpath.push_back(0);
 	visited[0] = true;
 
 	for (int i = 1; i < size; i++) {
 		minchoice = max;
 		minnode = 0;
-		lastnode = randpath.back();
+		lastnode = firstpath.back();
 
 		for (int j = 0; j < size; j++) {
 			if (visited[j] != true) {
@@ -110,32 +110,13 @@ std::vector<int> SimulatedAnnealing::firstPath(int** matrix_)
 			}
 		}
 
-		randpath.push_back(minnode);
+		firstpath.push_back(minnode);
 		visited[minnode] = true;
 	}
 
-	return randpath;
+	return firstpath;
 }
 
-std::vector<int> SimulatedAnnealing::randomizePath()
-{
-	std::vector<int> randpath;
-	bool* visited = new bool[size];
-	int x = 0;
-
-	for (int i = 0; i < size; i++) {
-		x = rand() % size;
-		if (visited[x] != true) {
-			randpath.push_back(x);
-			visited[x] = true;
-		}
-		else {
-			i--;
-		}
-	}
-
-	return randpath;
-}
 
 void SimulatedAnnealing::setCandidates()
 {
