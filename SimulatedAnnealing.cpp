@@ -131,7 +131,7 @@ void SimulatedAnnealing::setCandidates()
 
 void SimulatedAnnealing::chooseCandidate(int** matrix_)
 {
-	//losujemy nastepny ruch i usuwamy go z listy kandydatow
+	//losujemy nastepny ruch 
 	int x = rand() % candidates.size();
 	move m = candidates.at(x);
 
