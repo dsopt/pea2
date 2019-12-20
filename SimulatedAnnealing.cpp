@@ -8,8 +8,9 @@ using namespace std;
 SimulatedAnnealing::SimulatedAnnealing()
 {
 	time = Time();
-	stop = 100.0;
+	stop = 60.0;
 	minfound = 0.0;
+	tempf = 0.0;
 	a = 0.9;
 	max = 2147483647;
 }
@@ -43,11 +44,12 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 	time.start();
 	size = size_;
 	clear();
-	itmax = 10 * size;
-	maxtemp = 10000.00 * (double)size;
+	itmax = 500 * size;
+	maxtemp = 1000.00 * (double)size;
 	temp = maxtemp;
 
-	path = firstPath(matrix_);
+	//path = firstPath(matrix_);
+	path = randomizePath();
 	cost = getCost(matrix_);
 	minpath = path;
 	mincost = cost;
@@ -74,6 +76,7 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 			mincost = cost;
 			minfound = time.spanNow();
 			itsince = 0;
+			tempf = temp;
 		}
 		temp = temp * a;
 	}
@@ -83,7 +86,7 @@ void SimulatedAnnealing::run(int size_, int** matrix_)
 	for (int k = 0; k < size; k++) {
 		cout << minpath.at(k) << " ";
 	}
-	cout << "czas wyszukiwania: " << minfound << " s" << endl << endl;
+	cout << "czas wyszukiwania: " << minfound << " s" <<" z temperatura " << tempf << endl << endl;
 }
 
 std::vector<int> SimulatedAnnealing::firstPath(int** matrix_)
@@ -157,7 +160,7 @@ void SimulatedAnnealing::chooseCandidate(int** matrix_)
 
 	swap(m.first, m.last);
 	int tempcost = getCost(matrix_);
-	double c = (double)(rand() % 101) / 100.00;
+	double c = (double)(rand() % 1000001) / 1000000.00;
 	double b = (double)exp((((double)cost - (double)tempcost)) / temp);
 
 	//wybieramy nowa sciezke jezeli koszt jest mniejszy lub spelnia rownanie i losujemy dla niej sasiedztwo

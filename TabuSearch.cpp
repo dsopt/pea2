@@ -8,7 +8,7 @@ using namespace std;
 TabuSearch::TabuSearch()
 {
 	time = Time();
-	stop = 100.0;
+	stop = 60.0;
 	minfound = 0.0;
 	max = 2147483647;
 }
@@ -104,7 +104,7 @@ std::vector<int> TabuSearch::firstPath(int** matrix_)
 
 std::vector<int> TabuSearch::randomizePath()
 {
-	tabu.clear();
+	//tabu.clear();
 	std::vector<int> randpath;
 	bool* visited = new bool[size];
 	int x = 0;
