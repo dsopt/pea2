@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
 	srand(time(NULL));
-	Input inp = Input("./data/data17.txt");
+	Input inp = Input("./data17.txt");
 	Menu m = Menu(inp);
 	_getch();
 	return 0;
